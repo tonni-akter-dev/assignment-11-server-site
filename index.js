@@ -15,7 +15,6 @@ async function run() {
         await client.connect();
         const database = client.db("tourPlanner");
         const servicesCollection = database.collection("services");
-        // const placeCollection = database.collection("myplace");
         const bookingCollection = database.collection("totalBooking");
         app.get('/services', async (req, res) => {
             const cursor = servicesCollection.find({});
@@ -28,7 +27,6 @@ async function run() {
             const result = await servicesCollection.insertOne(service);
             res.json(result);
         });
-
         // my place api
         app.get('/services/:id', async (req, res) => {
             const id = req.params.id;
@@ -36,17 +34,7 @@ async function run() {
             const result = await servicesCollection.findOne(query);
             res.json(result)
         });
-        // app.post('/myplace', async (req, res) => {
-        //     const place = req.body;
-        //     const result = await placeCollection.insertOne(place);
-        //     res.json(result);
-        // });
-        // app.get('/myPlace', async (req, res) => {
-        //     const cursor = placeCollection.find({});
-        //     const result = await cursor.toArray();
-        //     res.json(result);
-        // });
-        
+        // total booking
         app.post('/totalBooking', async (req, res) => {
             const place = req.body;
             const result = await bookingCollection.insertOne(place);
@@ -57,14 +45,25 @@ async function run() {
             const result = await cursor.toArray();
             res.json(result);
         });
+        // for update
+        app.put('/totalBooking/:id', async (req, res) => {
+            const filter = { _id: ObjectId(req.params.id) };
+            console.log(req.params.id);
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    status: 'Approve'
+                },
+            };
+            const result = await bookingCollection.updateOne(filter, updateDoc, options);
+            res.json(result);
+        });
         app.delete('/totalBooking/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) }
             const result = await bookingCollection.deleteOne(query);
             res.send(result)
         })
-    
-
     } finally {
         // await client.close();
     }
