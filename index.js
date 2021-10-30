@@ -16,6 +16,7 @@ async function run() {
         const database = client.db("tourPlanner");
         const servicesCollection = database.collection("services");
         const bookingCollection = database.collection("totalBooking");
+        const blogCollection = database.collection("blog");
         app.get('/services', async (req, res) => {
             const cursor = servicesCollection.find({});
             const result = await cursor.toArray();
@@ -64,6 +65,15 @@ async function run() {
             const result = await bookingCollection.deleteOne(query);
             res.send(result)
         })
+        // blog
+        app.get('/blog', async (req, res) => {
+            const cursor = blogCollection.find({});
+            const result = await cursor.toArray();
+            res.json(result);
+        });
+
+
+
     } finally {
         // await client.close();
     }
