@@ -7,7 +7,6 @@ const port = process.env.PORT || 4000;
 const app = express();
 app.use(cors());
 app.use(express.json());
-// tourPlanner services
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.qtpo1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 async function run() {
@@ -47,9 +46,10 @@ async function run() {
             res.json(result);
         });
         // for update
-        app.put('/totalBooking/:id', async (req, res) => {
-            const filter = { _id: ObjectId(req.params.id) };
-            console.log(req.params.id);
+        app.put('/totalBooking/:id/uid', async (req, res) => {
+            const id = req.params.id;
+            const uid = req.params.uid;
+            const filter = { _id: ObjectId(id), userId: uid }
             const options = { upsert: true };
             const updateDoc = {
                 $set: {
@@ -59,9 +59,11 @@ async function run() {
             const result = await bookingCollection.updateOne(filter, updateDoc, options);
             res.json(result);
         });
-        app.delete('/totalBooking/:id', async (req, res) => {
+        // handle delete..........
+        app.delete('/totalBooking/:id/:uid', async (req, res) => {
             const id = req.params.id;
-            const query = { _id: ObjectId(id) }
+            const uid = req.params.uid;
+            const query = { _id: ObjectId(id), userId: uid }
             const result = await bookingCollection.deleteOne(query);
             res.send(result)
         })
@@ -71,51 +73,20 @@ async function run() {
             const result = await cursor.toArray();
             res.json(result);
         });
-
         app.get('/myBooking/:uid', async (req, res) => {
-            const uid=req.params.uid;
+            const uid = req.params.uid;
             console.log(uid);
-            const query ={ userId: uid}
+            const query = { userId: uid }
             const cursor = bookingCollection.find(query);
             const result = await cursor.toArray();
             console.log(result);
             res.json(result);
         });
-
-
-
-
-
     } finally {
         // await client.close();
     }
 }
 run().catch(console.dir);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 app.get('/', (req, res) => {
     res.send('Runnig the surver')
 })
