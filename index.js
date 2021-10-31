@@ -72,6 +72,18 @@ async function run() {
             res.json(result);
         });
 
+        app.get('/myBooking/:uid', async (req, res) => {
+            const uid=req.params.uid;
+            console.log(uid);
+            const query ={ userId: uid}
+            const cursor = bookingCollection.find(query);
+            const result = await cursor.toArray();
+            console.log(result);
+            res.json(result);
+        });
+
+
+
 
 
     } finally {
