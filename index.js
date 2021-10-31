@@ -16,7 +16,7 @@ async function run() {
         const servicesCollection = database.collection("services");
         const bookingCollection = database.collection("totalBooking");
         const blogCollection = database.collection("blog");
-        
+
         app.get('/services', async (req, res) => {
             const cursor = servicesCollection.find({});
             const result = await cursor.toArray();
@@ -65,7 +65,7 @@ async function run() {
         app.delete('/totalBooking/:id/:uid', async (req, res) => {
             const id = req.params.id;
             const uid = req.params.uid;
-            const query = { _id: ObjectId(id),userId: uid}
+            const query = { _id: ObjectId(id), userId: uid }
             const result = await bookingCollection.deleteOne(query);
             res.send(result)
         })
@@ -91,7 +91,7 @@ async function run() {
 run().catch(console.dir);
 app.get('/', (req, res) => {
     res.send('Runnig the surver')
-})
+});
 app.listen(port, () => {
     console.log('hitting the port', port)
-})
+});
