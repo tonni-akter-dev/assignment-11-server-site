@@ -1,8 +1,4 @@
-# Travesia-Assignment-11
-
-## Live site link
-
-[live site Link](https://assignment-11-72aaf.web.app/) : https://assignment-11-72aaf.web.app/
+# Travesia-Travel-Agency-Assignment-11
 
 ## Using Technology and Programming Language
 * Node.js

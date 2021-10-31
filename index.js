@@ -16,6 +16,7 @@ async function run() {
         const servicesCollection = database.collection("services");
         const bookingCollection = database.collection("totalBooking");
         const blogCollection = database.collection("blog");
+        
         app.get('/services', async (req, res) => {
             const cursor = servicesCollection.find({});
             const result = await cursor.toArray();
