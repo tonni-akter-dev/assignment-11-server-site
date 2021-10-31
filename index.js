@@ -57,13 +57,14 @@ async function run() {
                 },
             };
             const result = await bookingCollection.updateOne(filter, updateDoc, options);
+            console.log(result);
             res.json(result);
         });
         // handle delete..........
         app.delete('/totalBooking/:id/:uid', async (req, res) => {
             const id = req.params.id;
             const uid = req.params.uid;
-            const query = { _id: ObjectId(id), userId: uid }
+            const query = { _id: ObjectId(id),userId: uid}
             const result = await bookingCollection.deleteOne(query);
             res.send(result)
         })
