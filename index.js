@@ -46,7 +46,7 @@ async function run() {
             res.json(result);
         });
         // for update
-        app.put('/totalBooking/:id/uid', async (req, res) => {
+        app.put('/totalBooking/:id/:uid', async (req, res) => {
             const id = req.params.id;
             const uid = req.params.uid;
             const filter = { _id: ObjectId(id), userId: uid }
